@@ -20,7 +20,7 @@ public class ConfiguredAssetsBundle implements ConfiguredBundle<AssetsBundleConf
     private static final String DEFAULT_PATH = "/assets";
     protected static final CacheBuilderSpec DEFAULT_CACHE_SPEC = CacheBuilderSpec.parse("maximumSize=100");
     private static final String DEFAULT_INDEX_FILE = "index.htm";
-    
+
     private final String resourcePath;
     private final CacheBuilderSpec cacheBuilderSpec;
     private final String uriPath;
@@ -77,7 +77,7 @@ public class ConfiguredAssetsBundle implements ConfiguredBundle<AssetsBundleConf
     public ConfiguredAssetsBundle(String resourcePath, String uriPath, String indexFile) {
         this(resourcePath, DEFAULT_CACHE_SPEC, uriPath, indexFile);
     }
-    
+
     /**
      * Creates a new {@link ConfiguredAssetsBundle} which will configure the service to serve the static files
      * located in {@code src/main/resources/${path}} as {@code /${path}}. For example, given a
@@ -123,7 +123,8 @@ public class ConfiguredAssetsBundle implements ConfiguredBundle<AssetsBundleConf
         Iterable<Map.Entry<String, String>> mimeTypes = config.getMimeTypes();
 
         AssetServlet servlet = new AssetServlet(resourcePath, spec, uriPath, indexFile, overrides, mimeTypes);
-        env.servlets().addServlet("assets", servlet).addMapping(uriPath + "*");
+        String servletId = uriPath.replace("/", "");
+        env.servlets().addServlet(servletId, servlet).addMapping(uriPath + "*");
     }
 
     @Override
